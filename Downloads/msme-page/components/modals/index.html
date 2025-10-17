@@ -1,0 +1,160 @@
+<!-- Expert Callback Modal -->
+<div id="expert-modal-overlay" class="modal-overlay">
+    <div id="expert-modal" class="modal-content-box">
+        <button id="expert-modal-close" class="modal-close-btn">&times;</button>
+        <h3>Talk to an Expert</h3>
+        <p class="modal-subtitle">Verify your mobile number to get a callback.</p>
+        
+        <form id="expert-modal-form" onsubmit="return false;">
+            <div id="otp-step1">
+                <input type="text" id="otp-name" placeholder="Enter Your Name" required>
+                <input type="tel" id="otp-mobile" placeholder="Enter 10-digit Mobile Number" required pattern="[6-9]{1}[0-9]{9}">
+                <button type="button" id="otp-sendBtn" class="btn btn-primary">Send OTP</button>
+            </div>
+
+            <div id="otp-step2" class="otp-hidden">
+                <input type="text" id="otp-input" placeholder="Enter 4-digit OTP" required>
+                <button type="button" id="otp-verifyBtn" class="btn btn-primary" style="margin-bottom: 10px;">Verify & Request Callback</button>
+                <button type="button" id="otp-resendBtn" class="btn btn-secondary">Resend OTP</button>
+            </div>
+            
+            <div id="otp-message" class="otp-msg otp-hidden"></div>
+        </form>
+    </div>
+</div>
+
+<!-- GST Registration Options Modal -->
+<div id="gst-options-modal-overlay" class="modal-overlay">
+    <div class="modal-content-box modal-lg">
+        <button id="gst-options-modal-close" class="modal-close-btn">&times;</button>
+        <h3>Choose Your GST Registration Type</h3>
+        <p class="modal-subtitle">Select the option that best describes your business entity.</p>
+        <div class="gst-options-grid">
+            <div class="gst-option-card">
+                <h4>GST Registration HUF<br>(Hindu Undivided Family)</h4>
+                <p>It is the primary kind of registration issued for businesses under Hindu Undivided Family.</p>
+                <div class="price-section">
+                    <span class="original-price">₹1299</span>
+                    <span class="current-price">₹999</span>
+                </div>
+                <a href="#" class="btn btn-primary">Proceed</a>
+            </div>
+            <div class="gst-option-card">
+                <h4>GST for Individual and<br>Sole Proprietor</h4>
+                <p>It is the primary kind of registration issued for Individual and Sole Proprietor.</p>
+                <div class="price-section">
+                    <span class="original-price">₹1299</span>
+                    <span class="current-price">₹999</span>
+                </div>
+                <a href="#" class="btn btn-primary">Proceed</a>
+            </div>
+            <div class="gst-option-card">
+                <h4>GST Registration for<br>Partnership and LLP</h4>
+                <p>It is the primary kind of registration issued for Partnership and LLP.</p>
+                <div class="price-section">
+                    <span class="original-price">₹1299</span>
+                    <span class="current-price">₹999</span>
+                </div>
+                <a href="#" class="btn btn-primary">Proceed</a>
+            </div>
+            <div class="gst-option-card">
+                <h4>GST Registration For<br>Company</h4>
+                <p>It is the primary kind of registration issued for Pvt. Ltd and One Person Company.</p>
+                <div class="price-section">
+                     <span class="original-price">₹1888</span>
+                     <span class="current-price">₹999</span>
+                </div>
+                <a href="#" class="btn btn-primary">Proceed</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- GST Filing Options Modal -->
+<div id="gst-filing-modal-overlay" class="modal-overlay">
+    <div class="modal-content-box modal-lg">
+        <button id="gst-filing-modal-close" class="modal-close-btn">&times;</button>
+        <h3>Choose Your GST Filing Frequency</h3>
+        <p class="modal-subtitle">Select the filing option that suits your business cycle.</p>
+        <div class="gst-options-grid">
+            <div class="gst-option-card">
+                <h4>GST Filing Monthly</h4>
+                <p>Get your regular GST filed at your own comfort - applicable for Nil returns or invoices upto 50.</p>
+                <div class="price-section">
+                    <span class="original-price">₹499</span>
+                    <span class="current-price">₹299</span>
+                </div>
+                <a href="#" class="btn btn-primary">Proceed</a>
+            </div>
+            <div class="gst-option-card">
+                <h4>GST Filing Quarterly</h4>
+                <p>Get your quarterly GST filed at your own comfort - applicable for Nil returns or invoices upto 50.</p>
+                <div class="price-section">
+                    <span class="original-price">₹699</span>
+                    <span class="current-price">₹499</span>
+                </div>
+                <a href="#" class="btn btn-primary">Proceed</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- GST Notice Reply Modal -->
+<div id="gst-notice-modal-overlay" class="modal-overlay">
+    <div class="modal-content-box">
+        <button id="gst-notice-modal-close" class="modal-close-btn">&times;</button>
+        <h3>Reply to GST Notice</h3>
+        <p class="modal-subtitle">Please fill in your details for expert assistance.</p>
+        <form id="gst-notice-form" onsubmit="return false;">
+            <input type="text" id="gst-notice-name" name="name" placeholder="Enter Your Name" required>
+            <input type="text" id="gst-notice-gstin" name="gstin" placeholder="Enter GST Number" required>
+            <input type="tel" id="gst-notice-mobile" name="mobile" placeholder="Enter 10-digit Mobile Number" required pattern="[6-9]{1}[0-9]{9}">
+            <input type="text" id="gst-notice-city" name="city" placeholder="Enter Your City" required>
+            <button type="submit" class="btn btn-primary">Submit Details</button>
+        </form>
+    </div>
+</div>
+
+<!-- Document Checklist Modal -->
+<div id="docs-modal-overlay" class="modal-overlay printable-area">
+    <div class="modal-content-box modal-xl">
+        <button id="docs-modal-close" class="modal-close-btn">&times;</button>
+        <div class="section-title" style="margin-bottom: 20px; padding-top: 20px;">
+            <h2 style="font-size: 2.2rem;">Your Personalized Document Checklist</h2>
+            <p style="font-size: 1rem; max-width: none;">Answer two simple questions to generate a complete list of documents required for your specific situation.</p>
+        </div>
+
+        <div class="generator-container">
+            <div class="generator-grid">
+                <div>
+                    <label for="business-type">1. Select Your Business Type</label>
+                    <select id="business-type">
+                        <option value="" selected disabled>-- Choose an option --</option>
+                        <option value="proprietor">Proprietorship</option>
+                        <option value="partnership">Partnership Firm / LLP</option>
+                        <option value="company">Company (Pvt Ltd / Public / OPC)</option>
+                        <option value="other">HUF, Society, Trust, or Club</option>
+                    </select>
+                </div>
+                 <div>
+                    <label for="premise-type">2. Select Your Premise Type</label>
+                    <select id="premise-type">
+                        <option value="" selected disabled>-- Choose an option --</option>
+                        <option value="owned">Owned Property</option>
+                        <option value="rented">Rented or Leased Property</option>
+                        <option value="consented">Consented / Shared Property</option>
+                    </select>
+                </div>
+            </div>
+             <div class="generator-grid" style="margin-top: 20px;">
+                <button class="btn btn-primary" id="generate-btn"><i class="fas fa-magic"></i>Show My Checklist</button>
+                <div id="form-alert" class="alert" style="display: none;">Please select an option from both dropdowns.</div>
+            </div>
+        </div>
+
+        <div id="checklist-results">
+            <!-- Results will be injected here by JavaScript -->
+        </div>
+    </div>
+</div>
+

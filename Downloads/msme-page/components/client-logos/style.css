@@ -1,0 +1,45 @@
+/* --- Customer Logos Section --- */
+.client-logos-section {
+    padding: 60px 0;
+    background-color: var(--background-alt);
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    text-align: center;
+}
+.client-logos-title {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.logo-row {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 56px;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    max-width: 900px;
+}
+.logo-item img {
+    height: 35px;
+    width: auto;
+    filter: grayscale(1);
+    transition: filter 0.3s ease;
+    opacity: 0.7;
+}
+.logo-item img:hover {
+    filter: grayscale(0);
+    opacity: 1;
+}
+html.dark-mode .logo-item img {
+    opacity: 0.5;
+    filter: invert(1) grayscale(1);
+}
+html.dark-mode .logo-item img:hover {
+    filter: invert(0) grayscale(0);
+}
+

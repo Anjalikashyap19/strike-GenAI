@@ -1,0 +1,35 @@
+.testimonials { background: linear-gradient(180deg, var(--background-main) 0%, var(--background-alt) 100%); }
+html.dark-mode .testimonials { background: linear-gradient(180deg, var(--background-main) 0%, #161e2d 100%); }
+.card-deck-container { position: relative; min-height: 350px; display: flex; align-items: center; justify-content: center; perspective: 1000px; }
+.testimonial-card { background: var(--background-card); padding: 30px; border-radius: 12px; border: 1px solid var(--border-color); border-top: 4px solid var(--primary-color); width: 90%; max-width: 500px; position: absolute; transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out; box-shadow: 0 10px 30px rgba(var(--shadow-dark-rgb),0.08); }
+.testimonial-card p { margin-bottom: 25px; color: var(--text-secondary); font-size: 1rem; position: relative; padding-left: 20px; }
+.testimonial-card p::before { content: '“'; position: absolute; left: -5px; top: -10px; font-size: 2.5rem; color: var(--primary-color); opacity: 0.5; }
+.client-info { display: flex; align-items: center; gap: 15px; }
+.client-info img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }
+.client-info h4 { font-weight: 600; color: var(--text-primary); }
+.client-info span { color: var(--text-secondary); font-size: 0.9rem; }
+.testimonial-card.active { transform: translate(0, 0) scale(1); opacity: 1; z-index: 3; }
+.testimonial-card.next { transform: translate(0, 25px) scale(0.95); opacity: 1; z-index: 2; }
+.testimonial-card.prev { transform: translateX(-120%) rotate(-15deg) scale(0.8); opacity: 0; z-index: 1; }
+.testimonial-card:not(.active):not(.next):not(.prev) { transform: translate(0, 50px) scale(0.9); opacity: 0; z-index: 1; }
+.deck-nav { position: absolute; bottom: -60px; display: flex; gap: 15px; z-index: 5; }
+.deck-nav button { width: 45px; height: 45px; border-radius: 50%; border: 1px solid var(--border-color); background-color: var(--background-card); color: var(--primary-color); font-size: 1.2rem; cursor: pointer; transition: all 0.3s ease; }
+.deck-nav button:hover { background-color: var(--primary-color); color: white; transform: translateY(-3px); box-shadow: 0 4px 10px rgba(var(--shadow-rgb), 0.3); }
+
+@media (max-width: 768px) {
+    .testimonial-card { position: relative; margin-bottom: 20px; }
+    .card-deck-container { display: block; }
+    .testimonial-card.next, .testimonial-card.prev,
+    .testimonial-card:not(.active):not(.next):not(.prev) {
+        transform: none;
+        opacity: 1;
+        position: relative;
+        z-index: 1;
+    }
+    .deck-nav {
+        position: static;
+        justify-content: center;
+        margin-top: 20px;
+    }
+}
+

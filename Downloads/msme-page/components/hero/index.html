@@ -1,0 +1,690 @@
+<!-- <section class="hero" id="hero">
+    <div class="container hero-content">
+        <div class="hero-text animate-on-scroll">
+            <h1>Seamless Online MSME & Udyam Registration</h1>
+            <p>In India, an MSME Udyam registration is key to unlocking government benefits. We simplify the entire online process, making it fast and hassle-free, so you can focus on growing your business.</p>
+            <div class="hero-buttons">
+                <a href="#process" class="btn btn-primary">Apply Now <i class="fas fa-arrow-right"></i></a>
+                <a href="#" class="btn btn-secondary js-open-expert-modal">Talk to our Expert</a>
+            </div>
+        </div>
+
+        <div class="hero-image animate-on-scroll">
+            <div class="app-container">
+                <header class="app-header">
+                    <div>
+                        <p>Welcome</p>
+                        <h1>MSME Dashboard</h1>
+                    </div>
+                    <div class="app-user-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </header>
+                <main class="app-main">
+                    
+                    <div class="app-animation-container">
+                        <div class="animated-document">
+                            <i class="fas fa-certificate"></i>
+                            <i class="fas fa-check-circle checkmark"></i>
+                        </div>
+                    </div>
+
+                    <div class="app-action-grid">
+                        <button id="open-udyam-aadhar-modal-btn" class="app-action-btn">
+                            <div class="app-action-icon bg-pink">
+                                <i class="fas fa-id-card"></i>
+                            </div>
+                            <p>Udyam Aadhar</p>
+                        </button>
+                        
+                        <button id="open-udyam-reg-modal-btn" class="app-action-btn" >
+                            
+                            <div class="app-action-icon bg-orange">
+                                <i class="fas fa-file-signature"></i>
+                            </div>
+                            <p>Udyam Registration</p>
+                        </button>
+                      
+                        <button id="open-udyam-aadhar-docs-modal-btn" class="app-action-btn">
+                            <div class="app-action-icon bg-indigo">
+                                <i class="fas fa-folder-open"></i>
+                            </div>
+                            <p>Docs for Udyam Aadhar</p>
+                        </button>
+                        <button data-message="Opening Udyam Registration document list..." class="app-action-btn">
+                            <div class="app-action-icon bg-red">
+                                <i class="fas fa-clipboard-list"></i>
+                            </div>
+                            <p>Docs for Udyam Registration</p>
+                        </button>
+                    </div>
+
+                    <div class="app-activity">
+                        <button class="glowing-btn" id="open-udyam-benefits-modal-btn">Benefits of Udyam Registration</button>
+                        <div class="slide-to-action" id="slide-container">
+                            <div class="slider-knob" id="slider-knob"><i class="fas fa-chevron-right"></i></div>
+                            <span class="slider-text" id="slider-text">Who can apply for Udyam Registration?</span>
+                        </div>
+                    </div>
+                </main>
+                <div id="notification-modal" class="app-notification-modal">
+                    <span id="notification-text"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+   
+</script> -->
+
+
+
+
+<section class="hero" id="hero">
+    <div class="container hero-content">
+        <div class="hero-text animate-on-scroll">
+            <h1>Seamless Online MSME & Udyam Registration</h1>
+            <p>
+                In India, an MSME Udyam registration is key to unlocking government benefits.
+                We simplify the entire online process, making it fast and hassle-free, so you can focus on growing your
+                business.
+            </p>
+            <div class="hero-buttons">
+                <a href="#process" class="btn btn-primary">Apply Now <i class="fas fa-arrow-right"></i></a>
+                <a href="#" class="btn btn-secondary js-open-expert-modal">Talk to our Expert</a>
+            </div>
+        </div>
+
+        <div class="hero-image animate-on-scroll">
+            <div class="app-container">
+                <header class="app-header">
+                    <div>
+                        <p>Welcome</p>
+                        <h1>MSME Dashboard</h1>
+                    </div>
+                    <div class="app-user-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </header>
+
+                <main class="app-main">
+                    <div class="app-animation-container">
+                        <div class="animated-document">
+                            <i class="fas fa-certificate"></i>
+                            <i class="fas fa-check-circle checkmark"></i>
+                        </div>
+                    </div>
+
+                    <div class="app-action-grid">
+                        <button id="open-udyam-aadhar-modal-btn" class="app-action-btn">
+                            <div class="app-action-icon bg-pink">
+                                <i class="fas fa-id-card"></i>
+                            </div>
+                            <p>Udyam Aadhar</p>
+                        </button>
+
+                        <button id="open-udyam-reg-modal-btn" class="app-action-btn">
+                            <div class="app-action-icon bg-orange">
+                                <i class="fas fa-file-signature"></i>
+                            </div>
+                            <p>Udyam Registration</p>
+                        </button>
+
+                        <button id="open-udyam-aadhar-docs-modal-btn" class="app-action-btn">
+                            <div class="app-action-icon bg-indigo">
+                                <i class="fas fa-folder-open"></i>
+                            </div>
+                            <p>Docs for Udyam Aadhar</p>
+                        </button>
+
+                        <button data-message="Opening Udyam Registration document list..." class="app-action-btn" id="open-msme-docs-modal-btn">
+                            <div class="app-action-icon bg-red">
+                                <i class="fas fa-clipboard-list"></i>
+                            </div>
+                            <p>Docs for Udyam Registration</p>
+                        </button>
+                    </div>
+
+                    <div class="app-activity">
+                        <button class="glowing-btn" id="open-udyam-benefits-modal-btn">
+                            Benefits of Udyam Registration
+                        </button>
+                        <div class="slide-to-action" id="slide-container">
+                            <div class="slider-knob" id="slider-knob"><i class="fas fa-chevron-right"></i></div>
+                            <span class="slider-text" id="slider-text">Who can apply for Udyam Registration?</span>
+                        </div>
+                    </div>
+                </main>
+
+                <div id="notification-modal" class="app-notification-modal">
+                    <span id="notification-text"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ✅ POPUP MODAL UdyamAadhar -->
+<div id="docs-popup-overlay">
+    <div id="docs-popup">
+        <button id="close-docs-popup">&times;</button>
+        <h2>Documents Required for Udyam Aadhar</h2>
+       <br>
+<p>
+       <b> Getting your Udyam Aadhaar (MSME) registration is a simple, paperless process. You only need a few essential documents
+        to get started:</b> <br> <br>
+        
+       <b>Aadhaar Card –</b> Mandatory for the business owner, partner, or director for identity verification.
+        <br><br>
+       <b>PAN Card –</b>  Required for both the applicant and the business entity.
+        <br><br>
+        <b>Business Details –</b> Name, type of organization, and date of commencement.
+        <br><br>
+       <b>Bank Account Information –</b>  Account number and IFSC code.
+        <br><br>
+        <b>Business Address Proof –</b> Electricity bill, rent agreement, or property document.
+        <br><br>
+       <b>Investment & Employee Details –</b>Self-declared information on business investment and total employees.
+        <br><br>
+       <b> No physical documents are needed — all verification happens online through Aadhaar and PAN. Once approved, your Udyam
+        Registration Certificate is emailed directly to you.</b>
+        </p>
+        <button id="back-to-main" class="back-btn">⬅ Back</button>
+    </div>
+</div>
+
+<!-- ✅ STYLES -->
+<style>
+    /* Background blur overlay */
+    #docs-popup-overlay {
+        position: fixed;
+        display: flex;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(8px);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    /* Popup box */
+    #docs-popup {
+        background: #111827;
+        border-radius: 15px;
+        padding: 30px 40px;
+        width: 90%;
+        max-width: 700px;
+        box-shadow: 0 4px 25px rgba(0, 0, 0, 0.2);
+        position: relative;
+        text-align: left;
+        animation: fadeIn 0.3s ease;
+        position: relative;
+        left: 50px;
+        height: 700px;
+        overflow-y: scroll;
+        font-size: 25px;
+    }
+
+    #docs-popup h2 {
+        margin-bottom: 15px;
+        color: #686CF2;
+        text-align: center;
+    }
+
+    #docs-popup p {
+        margin: 15px 0 20px;
+        padding-left: 20px;
+        line-height: 1.8;
+    }
+
+    #close-docs-popup {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        background: none;
+        border: none;
+        font-size: 30px;
+        color: #f40d0d;
+        cursor: pointer;
+
+    }
+
+    .back-btn {
+        display: block;
+        margin: 0 auto;
+        padding: 10px 20px;
+        border: none;
+        background: #007bff;
+        color: white;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .back-btn:hover {
+        background: #0056b3;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive for tablets and mobiles */
+@media (max-width: 1024px) {
+    #docs-popup {
+        width: 90%;           /* use almost full width */
+        max-width: 600px;     /* reduce max-width */
+        left: 0;              /* center properly */
+        padding: 20px 30px;   /* reduce padding */
+        height: 80vh;         /* use viewport height */
+        font-size: 22px;      /* reduce font-size */
+    }
+}
+
+@media (max-width: 768px) {
+    #docs-popup {
+        width: 95%;           /* almost full width */
+        max-width: none;      /* remove max-width */
+        left: 0;
+        padding: 15px 20px;
+        height: 75vh;         /* smaller height for mobiles */
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    #docs-popup {
+        width: 98%;
+        padding: 10px 15px;
+        height: 70vh;
+        font-size: 18px;
+    }
+
+    #docs-popup h2 {
+        font-size: 20px;       /* smaller heading */
+    }
+
+    #docs-popup p, #docs-popup b {
+        font-size: 16px;       /* smaller text for readability */
+    }
+
+    .back-btn {
+        padding: 8px 15px;
+        font-size: 16px;
+    }
+}
+
+</style>
+
+
+
+
+
+<!-- ✅ POPUP MODAL MSME DOC -->
+<div id="msmedocs-popup-overlay">
+    <div id="msmedocs-popup">
+        <button id="msmeclose-docs-popup">&times;</button>
+        <h2>Documents Required for MSME Online Registration</h2>
+        <br>
+
+        <b> The online Udyam Registration made the process easier since all one had to do was self-declarations without having to
+        upload copies of documents.</b> <br> <br>
+<p>
+  
+ 
+    
+    <b>Aadhaar:</b> Essential 12-digit ID.
+    <br> <br>
+    <b>PAN:</b> Unique 10-char identifier.
+    <br> <br>
+    <b>Bank:</b> Account details for transactions.
+    <br> <br>
+    Thus it may be simplified, eliminating the lengthy paperwork and administration burden. Through self-disclosure
+    entrepreneurs can have a fast yet easily accessible process of disclosure. It focuses on energy efficiency even when the
+    process of registration of businesses is properly followed with entry Intec.
+    <br> <br>
+    
+   <b>MSME online registration With India Advocacy:</b>
+   <br>
+    Unlock the potential of your business with MSME registration through India Advocacy. Our dedicated technical support
+    team ensures a smooth registration process, guiding you every step of the way. Benefit from our expertise and streamline
+    your MSME registration to access a range of advantages and opportunities for growth in the dynamic Indian market.
+
+        </p>
+        <br> 
+        <button id="msmeback-to-main" class="back-btn">⬅ Back</button>
+    </div>
+</div>
+
+<!-- ✅ STYLES -->
+<style>
+    /* Background blur overlay */
+    #msmedocs-popup-overlay {
+        position: fixed;
+        display: flex;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(8px);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    /* Popup box */
+    #msmedocs-popup {
+        background: #111827;
+        border-radius: 15px;
+        padding: 30px 40px;
+        width: 90%;
+        max-width: 700px;
+        box-shadow: 0 4px 25px rgba(0, 0, 0, 0.2);
+        position: relative;
+        text-align: left;
+        animation: fadeIn 0.3s ease;
+        position: relative;
+        left: 50px;
+        height: 700px;
+        overflow-y: scroll;
+        font-size: 25px;
+    }
+
+    #msmedocs-popup h2 {
+        margin-bottom: 15px;
+        color: #686CF2;
+        text-align: center;
+    }
+
+    #msmedocs-popup p {
+        margin: 15px 0 20px;
+        padding-left: 20px;
+        line-height: 1.8;
+    }
+
+    #msmeclose-docs-popup {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        background: none;
+        border: none;
+        font-size: 30px;
+        color: #f40d0d;
+        cursor: pointer;
+
+    }
+
+    .msmeback-btn {
+        display: block;
+        margin: 0 auto;
+        padding: 10px 20px;
+        border: none;
+        background: #007bff;
+        color: white;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .msmeback-btn:hover {
+        background: #0056b3;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive for tablets and mobiles */
+@media (max-width: 1024px) {
+    #msmedocs-popup {
+        width: 90%;           /* use almost full width */
+        max-width: 600px;     /* reduce max-width */
+        left: 0;              /* center properly */
+        padding: 20px 30px;   /* reduce padding */
+        height: 80vh;         /* use viewport height */
+        font-size: 22px;      /* reduce font-size */
+    }
+}
+
+@media (max-width: 768px) {
+    #msmedocs-popup {
+        width: 95%;           /* almost full width */
+        max-width: none;      /* remove max-width */
+        left: 0;
+        padding: 15px 20px;
+        height: 75vh;         /* smaller height for mobiles */
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    #msmedocs-popup {
+        width: 98%;
+        padding: 10px 15px;
+        height: 70vh;
+        font-size: 18px;
+    }
+
+    #msmedocs-popup h2 {
+        font-size: 20px;       /* smaller heading */
+    }
+
+    #msmedocs-popup p, #msmedocs-popup b {
+        font-size: 16px;       /* smaller text for readability */
+    }
+
+    .msmeback-btn {
+        padding: 8px 15px;
+        font-size: 16px;
+    }
+}
+
+</style>
+
+
+
+
+
+<!-- ✅ POPUP MODAL for benifits of Udyam Registraction-->
+<div id="msmedocs-popup-overlay">
+    <div id="msmedocs-popup">
+        <button id="msmeclose-docs-popup">&times;</button>
+        <h2>Documents Required for MSME Online Registration</h2>
+        <br>
+
+        <b> The online Udyam Registration made the process easier since all one had to do was self-declarations without
+            having to
+            upload copies of documents.</b> <br> <br>
+        <p>
+
+
+
+            <b>Aadhaar:</b> Essential 12-digit ID.
+            <br> <br>
+            <b>PAN:</b> Unique 10-char identifier.
+            <br> <br>
+            <b>Bank:</b> Account details for transactions.
+            <br> <br>
+            Thus it may be simplified, eliminating the lengthy paperwork and administration burden. Through
+            self-disclosure
+            entrepreneurs can have a fast yet easily accessible process of disclosure. It focuses on energy efficiency
+            even when the
+            process of registration of businesses is properly followed with entry Intec.
+            <br> <br>
+
+            <b>MSME online registration With India Advocacy:</b>
+            <br>
+            Unlock the potential of your business with MSME registration through India Advocacy. Our dedicated technical
+            support
+            team ensures a smooth registration process, guiding you every step of the way. Benefit from our expertise
+            and streamline
+            your MSME registration to access a range of advantages and opportunities for growth in the dynamic Indian
+            market.
+
+        </p>
+        <br>
+        <button id="msmeback-to-main" class="back-btn">⬅ Back</button>
+    </div>
+</div>
+
+<!-- ✅ STYLES -->
+<style>
+    /* Background blur overlay */
+    #msmedocs-popup-overlay {
+        position: fixed;
+        display: flex;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(8px);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    /* Popup box */
+    #msmedocs-popup {
+        background: #111827;
+        border-radius: 15px;
+        padding: 30px 40px;
+        width: 90%;
+        max-width: 700px;
+        box-shadow: 0 4px 25px rgba(0, 0, 0, 0.2);
+        position: relative;
+        text-align: left;
+        animation: fadeIn 0.3s ease;
+        position: relative;
+        left: 50px;
+        height: 700px;
+        overflow-y: scroll;
+        font-size: 25px;
+    }
+
+    #msmedocs-popup h2 {
+        margin-bottom: 15px;
+        color: #686CF2;
+        text-align: center;
+    }
+
+    #msmedocs-popup p {
+        margin: 15px 0 20px;
+        padding-left: 20px;
+        line-height: 1.8;
+    }
+
+    #msmeclose-docs-popup {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        background: none;
+        border: none;
+        font-size: 30px;
+        color: #f40d0d;
+        cursor: pointer;
+
+    }
+
+    .msmeback-btn {
+        display: block;
+        margin: 0 auto;
+        padding: 10px 20px;
+        border: none;
+        background: #007bff;
+        color: white;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .msmeback-btn:hover {
+        background: #0056b3;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive for tablets and mobiles */
+    @media (max-width: 1024px) {
+        #msmedocs-popup {
+            width: 90%;
+            /* use almost full width */
+            max-width: 600px;
+            /* reduce max-width */
+            left: 0;
+            /* center properly */
+            padding: 20px 30px;
+            /* reduce padding */
+            height: 80vh;
+            /* use viewport height */
+            font-size: 22px;
+            /* reduce font-size */
+        }
+    }
+
+    @media (max-width: 768px) {
+        #msmedocs-popup {
+            width: 95%;
+            /* almost full width */
+            max-width: none;
+            /* remove max-width */
+            left: 0;
+            padding: 15px 20px;
+            height: 75vh;
+            /* smaller height for mobiles */
+            font-size: 20px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        #msmedocs-popup {
+            width: 98%;
+            padding: 10px 15px;
+            height: 70vh;
+            font-size: 18px;
+        }
+
+        #msmedocs-popup h2 {
+            font-size: 20px;
+            /* smaller heading */
+        }
+
+        #msmedocs-popup p,
+        #msmedocs-popup b {
+            font-size: 16px;
+            /* smaller text for readability */
+        }
+
+        .msmeback-btn {
+            padding: 8px 15px;
+            font-size: 16px;
+        }
+    }
+</style>
+
+
+
