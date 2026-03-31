@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palette Studio — Professional Color Palette Generator</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #fafafa;
+            --surface: #ffffff;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --accent: #6366f1;
+            --accent-light: #eef2ff;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.12);
+            --radius: 16px;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --accent: #818cf8;
+            --accent-light: #1e1b4b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 2rem;
+            transition: var(--transition);
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 2.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Main Card */
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        /* Toolbar */
+        .toolbar {
+            padding: 1.5rem;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .toolbar-left,
+        .toolbar-right {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        select,
+        button {
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            border: 1.5px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+            font: inherit;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        select:focus,
+        button:focus-visible {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            border: none;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background: #4f46e5;
+            transform: translateY(-1px);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        /* Palette Display */
+        .palette-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem;
+        }
+
+        .palette-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .palette-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .palette-header {
+            padding: 1rem 1.5rem;
+            background: rgba(99, 102, 241, 0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .palette-name {
+            color: var(--accent);
+        }
+
+        .swatches {
+            display: flex;
+            height: 180px;
+        }
+
+        .swatch {
+            flex: 1;
+            position: relative;
+            cursor: pointer;
+            transition: var(--transition);
+            overflow: hidden;
+        }
+
+        .swatch:hover {
+            flex: 1.4;
+            z-index: 10;
+        }
+
+        .swatch::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(transparent 50%, rgba(0, 0, 0, 0.5));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .swatch:hover::after {
+            opacity: 1;
+        }
+
+        .swatch-info {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            right: 1rem;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: var(--transition);
+            z-index: 2;
+        }
+
+        .swatch:hover .swatch-info {
+            opacity: 1;
+            transform: none;
+        }
+
+        .hex {
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            font-weight: 600;
+            backdrop-filter: blur(4px);
+        }
+
+        .lock {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            width: 36px;
+            height: 36px;
+            background: rgba(0, 0, 0, 0.5);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .swatch:hover .lock {
+            opacity: 1;
+        }
+
+        /* Export Panel */
+        .export-panel {
+            padding: 2rem;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .export-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .export-card {
+            background: var(--bg);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+        }
+
+        .export-card h3 {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            color: var(--accent);
+        }
+
+        textarea {
+            width: 100%;
+            height: 140px;
+            padding: 1rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            color: var(--text);
+            resize: vertical;
+        }
+
+        .gradient-preview {
+            height: 160px;
+            border-radius: 12px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24, #6c5ce7);
+            background-size: 300% 100%;
+            animation: gradient 12s ease infinite;
+            border: 2px dashed var(--border);
+        }
+
+        @keyframes gradient {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        /* Toast */
+        #toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s ease;
+            z-index: 1000;
+        }
+
+        #toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-10px);
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            width: 56px;
+            height: 56px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            z-index: 100;
+        }
+    </style>
+</head>
+
+<body>
+
+    <button class="theme-toggle" id="themeToggle">Dark Mode</button>
+
+    <div class="container">
+        <header>
+            <h1>Palette Studio</h1>
+            <p class="subtitle">Generate beautiful, accessible, and harmonious color palettes for your next project</p>
+        </header>
+
+        <div class="card">
+            <div class="toolbar">
+                <div class="toolbar-left">
+                    <select id="harmony">
+                        <option value="analogous">Analogous</option>
+                        <option value="monochromatic">Monochromatic</option>
+                        <option value="triadic">Triadic</option>
+                        <option value="complementary">Complementary</option>
+                        <option value="tetradic">Tetradic</option>
+                        <option value="random">Surprise Me</option>
+                    </select>
+                    <select id="count">
+                        <option value="1">1 Palette</option>
+                        <option value="2">2 Palettes</option>
+                        <option value="3" selected>3 Palettes</option>
+                    </select>
+                </div>
+                <div class="toolbar-right">
+                    <button class="btn-ghost" id="exportBtn">Export ↓</button>
+                    <button class="btn-primary" id="generateBtn">Generate New</button>
+                </div>
+            </div>
+
+            <div id="palettes" class="palette-grid"></div>
+
+            <div class="export-panel">
+                <div class="export-card">
+                    <h3>CSS Custom Properties</h3>
+                    <textarea id="cssOutput" readonly></textarea>
+                    <button class="btn-primary" style="margin-top:1rem; width:100%;">Copy CSS</button>
+                </div>
+                <div class="export-card">
+                    <h3>Live Gradient Preview</h3>
+                    <div id="gradient" class="gradient-preview"></div>
+                    <button class="btn-ghost" style="margin-top:1rem; width:100%;">Copy Gradient</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast">Copied!</div>
+
+    <script>
+        // Professional color generation using OKLCH (perceptually uniform)
+        function generatePalette(baseHue = Math.random() * 360) {
+            const mode = document.getElementById('harmony').value;
+            const hues = {
+                analogous: [baseHue, baseHue + 25, baseHue + 50, baseHue - 20, baseHue - 40],
+                monochromatic: Array(5).fill(baseHue),
+                triadic: [baseHue, baseHue + 120, baseHue + 240, baseHue + 60, baseHue + 180],
+                complementary: [baseHue, baseHue + 180, baseHue + 160, baseHue + 200, baseHue + 20],
+                tetradic: [baseHue, baseHue + 90, baseHue + 180, baseHue + 270, baseHue + 45],
+                random: Array(5).fill(0).map(() => Math.random() * 360)
+            }[mode];
+
+            const palette = hues.map((h, i) => {
+                const l = mode === 'monochromatic'
+                    ? 25 + i * 15 + Math.random() * 8
+                    : [30, 45, 60, 75, 88][i] + (Math.random() * 12 - 6);
+                const c = mode === 'monochromatic' ? 0.08 : 0.15 + Math.random() * 0.08;
+                return oklchToHex(l / 100, c, (h + 360) % 360);
+            });
+            return palette;
+        }
+
+        function oklchToHex(l, c, h) {
+            // Simplified OKLCH → sRGB → Hex (good enough for design)
+            const hue = h * Math.PI / 180;
+            const a = c * Math.cos(hue);
+            const b = c * Math.sin(hue);
+            let r = l + 0.3963377774 * a + 0.2158037573 * b;
+            let g = l - 0.1055613458 * a - 0.0638541728 * b;
+            let bb = l - 0.0894841775 * a - 1.2914855480 * b;
+            r = srgb(r); g = srgb(g); bb = srgb(bb);
+            return `#${[r, g, bb].map(x => Math.round(x * 255).toString(16).padStart(2, '0')).join('').toUpperCase()}`;
+            function srgb(x) { return x <= 0.0031308 ? 12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055; }
+        }
+
+        const locks = Array(5).fill(false);
+        let currentPalettes = [];
+
+        function render() {
+            const container = document.getElementById('palettes');
+            container.innerHTML = '';
+            const count = +document.getElementById('count').value;
+            currentPalettes = Array(count).fill().map(() => generatePalette());
+
+            currentPalettes.forEach((palette, idx) => {
+                const card = document.createElement('div');
+                card.className = 'palette-card';
+                card.innerHTML = `<div class="palette-header">
+          <span class="palette-name">Palette ${idx + 1}</span>
+          <button class="btn-ghost" onclick="usePalette(${idx})">Use This</button>
+        </div>`;
+
+                const swatches = document.createElement('div');
+                swatches.className = 'swatches';
+
+                palette.forEach((color, i) => {
+                    const swatch = document.createElement('div');
+                    swatch.className = 'swatch';
+                    swatch.style.backgroundColor = color;
+                    swatch.innerHTML = `
+            <button class="lock" data-idx="${i}">Unlocked</button>
+            <div class="swatch-info">
+              <div class="hex">${color}</div>
+            </div>
+          `;
+                    swatch.addEventListener('click', () => {
+                        navigator.clipboard.writeText(color);
+                        showToast(`Copied ${color}`);
+                    });
+                    swatch.querySelector('.lock').addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        locks[i] = !locks[i];
+                        e.target.textContent = locks[i] ? 'Locked' : 'Unlocked';
+                        render();
+                    });
+                    swatches.appendChild(swatch);
+                });
+
+                card.appendChild(swatches);
+                container.appendChild(card);
+            });
+
+            usePalette(0);
+        }
+
+        window.usePalette = (idx) => {
+            const palette = currentPalettes[idx];
+            document.getElementById('cssOutput').value = `:root {\n${palette.map((c, i) => `  --color-${i + 1}: ${c};`).join('\n')}\n}`;
+            document.getElementById('gradient').style.background = `linear-gradient(90deg, ${palette.join(', ')})`;
+            document.getElementById('gradient').style.backgroundSize = '300% 100%';
+        };
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2000);
+        }
+
+        // Events
+        document.getElementById('generateBtn').onclick = render;
+        document.getElementById('themeToggle').onclick = () => {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            document.documentElement.setAttribute('data-theme', isDark ? '' : 'dark');
+            document.getElementById('themeToggle').textContent = isDark ? 'Dark Mode' : 'Light Mode';
+        };
+
+        // Auto-detect system theme
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            document.getElementById('themeToggle').textContent = 'Light Mode';
+        }
+
+        // Copy buttons
+        document.querySelectorAll('button').forEach(btn => {
+            if (btn.textContent.includes('Copy')) {
+                btn.onclick = () => {
+                    const ta = btn.previousElementSibling;
+                    navigator.clipboard.writeText(ta.tagName === 'TEXTAREA' ? ta.value : ta.style.background);
+                    showToast('Copied to clipboard!');
+                };
+            }
+        });
+
+        // Init
+        render();
+    </script>
+</body>
+
+</html>

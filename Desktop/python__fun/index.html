@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Import Export Code Registration</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://unpkg.com/@studio-freight/lenis"></script>
+<style>
+    body {
+        background: #0b0f14;
+        color: #e5e7eb;
+        font-family: Inter, sans-serif;
+        overflow-x: hidden;
+    }
+
+    /* HERO GRADIENT */
+
+    .hero-gradient {
+        background: radial-gradient(circle at top, #1a2330, #05070b);
+    }
+
+    /* GLASS CARD */
+
+    .glass {
+        background: rgba(255, 255, 255, 0.04);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    /* BACKGROUND BLOBS */
+
+    .blob {
+        position: absolute;
+        filter: blur(120px);
+        opacity: .35;
+        z-index: -1;
+    }
+
+    .blob1 {
+        width: 400px;
+        height: 400px;
+        background: #A855F7;
+        top: -120px;
+        left: -120px;
+    }
+
+    .blob2 {
+        width: 450px;
+        height: 450px;
+        background: #6366f1;
+        bottom: -120px;
+        right: -120px;
+    }
+
+    .blob3 {
+        width: 300px;
+        height: 300px;
+        background: #A855F7;
+        top: 40%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    .glass:hover{
+transform:translateY(-4px);
+transition:all .3s ease;
+box-shadow:0 30px 60px rgba(0,0,0,0.45);
+}
+
+/* FLOATING */
+
+@keyframes floatBtn {
+0% { transform: translateY(0); }
+50% { transform: translateY(-8px); }
+100% { transform: translateY(0); }
+}
+
+
+
+@keyframes shakeBtn {
+
+0% { transform: translateX(0); }
+
+10% { transform: translateX(-4px); }
+20% { transform: translateX(4px); }
+
+30% { transform: translateX(-4px); }
+40% { transform: translateX(4px); }
+
+50% { transform: translateX(-3px); }
+60% { transform: translateX(3px); }
+
+70% { transform: translateX(-2px); }
+80% { transform: translateX(2px); }
+
+90% { transform: translateX(-1px); }
+
+100% { transform: translateX(0); }
+
+}
+
+/* BUTTON BASE */
+
+.cta-btn{
+animation: floatBtn 3s ease-in-out infinite;
+transition: all .3s ease;
+}
+
+/* SHAKE CLASS */
+
+.shake{
+animation: shakeBtn 0.9s ease;
+}
+.cta-btn:hover{
+transform: translateY(-3px) scale(1.03);
+box-shadow:0 12px 30px rgba(0,0,0,.4);
+}
+</style>
+<style>
+
+body{
+background:#0b0f14;
+color:#e5e7eb;
+font-family:Inter, sans-serif;
+}
+
+.hero-gradient{
+background: radial-gradient(circle at top,#18232f,#05070b);
+}
+.slide-hover{
+position: relative;
+overflow: hidden;
+z-index: 1;
+}
+
+/* sliding background */
+
+.slide-hover::before{
+content:"";
+position:absolute;
+top:0;
+left:-100%;
+width:100%;
+height:100%;
+background:#2563eb; /* hover color */
+transition: all .4s cubic-bezier(.4,0,.2,1);
+z-index:-1;
+}
+
+/* on hover */
+
+.slide-hover:hover::before{
+left:0;
+}
+
+.slide-hover:hover{
+color:white;
+}
+
+/* PREMIUM GLASS CARD */
+
+.premium-glass{
+position:relative;
+background: rgba(255,255,255,0.05);
+backdrop-filter: blur(20px);
+-webkit-backdrop-filter: blur(20px);
+
+border:1px solid rgba(255,255,255,0.08);
+
+border-radius:16px;
+
+box-shadow:
+0 10px 30px rgba(0,0,0,0.4),
+inset 0 1px 0 rgba(255,255,255,0.1);
+
+transition: all .35s ease;
+}
+
+/* soft gradient border glow */
+
+.premium-glass::before{
+content:"";
+position:absolute;
+inset:0;
+border-radius:16px;
+padding:1px;
+background:linear-gradient(
+120deg,
+rgba(168,85,247,0.4),
+rgba(99,102,241,0.3),
+transparent
+);
+
+-webkit-mask:
+linear-gradient(#000 0 0) content-box,
+linear-gradient(#000 0 0);
+
+-webkit-mask-composite: xor;
+mask-composite: exclude;
+
+pointer-events:none;
+}
+
+/* hover effect */
+
+.premium-glass:hover{
+
+transform: translateY(-4px);
+
+box-shadow:
+0 25px 60px rgba(0,0,0,0.6),
+0 0 30px rgba(168,85,247,0.2);
+
+}
+/* PREMIUM SCROLLBAR */
+
+ul::-webkit-scrollbar{
+width:6px;
+}
+
+ul::-webkit-scrollbar-thumb{
+background:#A855F7;
+border-radius:10px;
+}
+
+ul::-webkit-scrollbar-track{
+background:transparent;
+}
+#iecList::-webkit-scrollbar{
+width:6px;
+}
+
+#iecList::-webkit-scrollbar-thumb{
+background:#A855F7;
+border-radius:10px;
+}
+
+#iecList::-webkit-scrollbar-track{
+background:transparent;
+}
+
+</style>
+</head>
+
+<body>
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+<div class="blob blob3"></div>
+
+<!-- HERO SECTION -->
+
+<section class="hero-gradient py-20 text-center">
+
+<h1 class="text-5xl font-bold mb-6">
+<span class="text-indigo-400">Import Export Code</span>
+Registration
+</h1>
+
+<p class="max-w-3xl mx-auto text-gray-400 mb-8">
+Expand your business beyond borders with a fast, hassle-free
+Import Export Certificate (IEC). We manage the entire process
+from application to approval.
+</p>
+
+<button id="ctaButton" class="cta-btn slide-hover  border border-blue-500 px-8 py-4 rounded-xl text-lg hover:bg-blue-600 transition">
+
+    🚀 <span class="text-xl font-bold ">IEC Registration</span> – starts with us now
+
+</button>
+
+</section>
+
+
+<!-- CONTENT SECTION -->
+
+<section class="max-w-7xl mx-auto px-6 py-16 grid lg:grid-cols-3 gap-12">
+
+<!-- MAIN CONTENT -->
+
+<div class="lg:col-span-2 space-y-10 p-8 glass rounded-2xl">
+
+<h2 class="text-4xl font-semibold">
+Import Export Code in Malegaon
+</h2>
+
+<p class="text-gray-400 leading-relaxed">
+The bustling town of Malegaon, known for its vibrant business
+community, is an ideal location for entrepreneurs aiming to
+expand their business operations. With the growing demand for
+international trade, acquiring an Import Export Code (IEC)
+is crucial for business owners.
+</p>
+
+<h3 class="text-2xl font-semibold mt-6">
+Understanding the Import Export Code
+</h3>
+
+<p class="text-gray-400 leading-relaxed">
+The Import Export Code (IEC) is your ticket to international
+trading success. It is a mandatory requirement for any business
+entity involved in import/export activities.
+</p>
+
+<!-- LIST -->
+
+<ul class="space-y-4 mt-6">
+
+<li class="flex gap-3">
+<i class="fa-solid fa-circle-check text-green-400"></i>
+Firm’s establishment certificates like partnership deed
+</li>
+
+<li class="flex gap-3">
+<i class="fa-solid fa-circle-check text-green-400"></i>
+Address proof such as lease deed or utility bill
+</li>
+
+<li class="flex gap-3">
+<i class="fa-solid fa-circle-check text-green-400"></i>
+Bank account proof with cancelled cheque
+</li>
+
+<li class="flex gap-3">
+<i class="fa-solid fa-circle-check text-green-400"></i>
+Digital Signature Certificate (DSC)
+</li>
+
+<li class="flex gap-3">
+<i class="fa-solid fa-circle-check text-green-400"></i>
+PAN card validated against income tax records
+</li>
+
+</ul>
+
+<h3 class="text-2xl font-semibold mt-8">
+The Role of Our Experts
+</h3>
+
+<p class="text-gray-400 leading-relaxed">
+Our professionals simplify the entire IEC registration process
+by handling documentation, verification and filing while
+ensuring compliance with DGFT regulations.
+</p>
+
+</div>
+
+
+<!-- SIDEBAR -->
+
+<div class="space-y-8">
+
+<!-- RELATED GUIDES -->
+
+
+
+<!-- CITY LIST -->
+
+<div class="premium-glass sticky top-6 z-[111] overflow-hidden">
+
+    <!-- HEADER -->
+
+    <button id="iecToggle" class="w-full flex items-center justify-between p-6 text-left">
+
+        <h3 class="text-lg font-semibold text-white">
+            Import Export Code
+        </h3>
+
+        <i id="arrowIcon" class="fa-solid fa-chevron-up transition-transform duration-300"></i>
+
+    </button>
+
+    <!-- LIST -->
+
+    <ul id="iecList" class="max-h-72 overflow-y-auto px-6 pb-6 space-y-4 text-[#A855F7] transition-all duration-500">
+
+        <li class="flex justify-between border-b border-white/10 pb-3 hover:text-white transition">
+            Andhra Pradesh
+            <i class="fa-solid fa-arrow-right"></i>
+        </li>
+
+        <li class="flex justify-between border-b border-white/10 pb-3 hover:text-white transition">
+            Arunachal Pradesh
+            <i class="fa-solid fa-arrow-right"></i>
+        </li>
+
+        <li class="flex justify-between border-b border-white/10 pb-3 hover:text-white transition">
+            Assam
+            <i class="fa-solid fa-arrow-right"></i>
+        </li>
+
+        <li class="flex justify-between border-b border-white/10 pb-3 hover:text-white transition">
+            Bihar
+            <i class="fa-solid fa-arrow-right"></i>
+        </li>
+
+        <li class="flex justify-between border-b border-white/10 pb-3 hover:text-white transition">
+            Chandigarh
+            <i class="fa-solid fa-arrow-right"></i>
+        </li>
+
+        <li class="flex justify-between border-b border-white/10 pb-3 hover:text-white transition">
+            Delhi
+            <i class="fa-solid fa-arrow-right"></i>
+        </li>
+        <li class="flex justify-between border-b border-white/10 pb-3 hover:text-white transition">
+            East west
+            <i class="fa-solid fa-arrow-right"></i>
+        </li>
+        
+        <li class="flex justify-between border-b border-white/10 pb-3 hover:text-white transition">
+            Hryana
+            <i class="fa-solid fa-arrow-right"></i>
+        </li>
+        
+        <li class="flex justify-between border-b border-white/10 pb-3 hover:text-white transition">
+            Chennai
+            <i class="fa-solid fa-arrow-right"></i>
+        </li>
+
+    </ul>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- WHATSAPP FLOATING BUTTON -->
+
+<a href="https://wa.me/919999999999"
+class="fixed bottom-6 right-6 z-[120] bg-green-500 text-white px-6 py-4 rounded-full shadow-xl flex items-center gap-3 hover:bg-green-600">
+
+<i class="fab fa-whatsapp text-xl"></i>
+Live Chat with Experts
+
+</a>
+
+
+
+
+<script>
+    const lenis = new Lenis({
+        duration: 1.2,
+        smoothWheel: true
+    });
+
+    function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+</script>
+<script>
+
+    const btn = document.getElementById("ctaButton");
+
+    setInterval(() => {
+
+        btn.classList.add("shake");
+
+        setTimeout(() => {
+            btn.classList.remove("shake");
+        }, 500);
+
+    }, 7000);
+
+</script>
+<script>
+
+    const toggle = document.getElementById("iecToggle");
+    const list = document.getElementById("iecList");
+    const arrow = document.getElementById("arrowIcon");
+
+    let open = true;
+
+    toggle.addEventListener("click", () => {
+
+        if (open) {
+
+            list.style.maxHeight = "0px";
+            list.style.paddingBottom = "0px";
+            arrow.style.transform = "rotate(180deg)";
+            open = false;
+
+        } else {
+
+            list.style.maxHeight = "300px";
+            list.style.paddingBottom = "1.5rem";
+            arrow.style.transform = "rotate(0deg)";
+            open = true;
+
+        }
+
+    });
+
+</script>
+
+</body>
+</html>

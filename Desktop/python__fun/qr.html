@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        /* Subtle animated background spheres */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -200px;
+            right: -200px;
+            animation: float 20s infinite linear;
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: rgba(102, 126, 234, 0.15);
+            border-radius: 50%;
+            bottom: -150px;
+            left: -150px;
+            animation: float 25s infinite reverse;
+            z-index: 0;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            100% {
+                transform: translate(100px, 100px) rotate(360deg);
+            }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            width: 100%;
+            max-width: 500px;
+            padding: 50px 45px;
+            border-radius: 28px;
+            box-shadow: 0 25px 60px rgba(102, 126, 234, 0.3);
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.9s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            font-size: 34px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            animation: slideIn 1s ease-out;
+        }
+
+        p.subtitle {
+            color: #555;
+            font-size: 16px;
+            margin-bottom: 35px;
+            opacity: 0;
+            animation: fadeIn 1.2s ease-out forwards;
+            animation-delay: 0.4s;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 30px 0;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out forwards;
+            animation-delay: 0.6s;
+        }
+
+        input {
+            width: 100%;
+            padding: 19px 22px;
+            border: 2px solid #e0e7ff;
+            border-radius: 18px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.4s ease;
+            background: #f8faff;
+            color: #333;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+        }
+
+        input:focus {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 0 0 6px rgba(102, 126, 234, 0.2), 0 10px 30px rgba(102, 126, 234, 0.15);
+            background: white;
+        }
+
+        button {
+            width: 100%;
+            padding: 19px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 18px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out forwards;
+            animation-delay: 0.8s;
+        }
+
+        button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+        }
+
+        button:active {
+            transform: translateY(-1px);
+        }
+
+        #qrBox {
+            margin-top: 40px;
+            padding: 30px;
+            background: white;
+            border-radius: 24px;
+            display: inline-block;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        #qrBox.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        #qrBox img {
+            width: 260px;
+            height: 260px;
+            border-radius: 18px;
+            border: 12px solid #f8faff;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .error {
+            color: #e74c3c;
+            font-size: 15px;
+            font-weight: 500;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-8px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(8px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 40px 30px;
+                max-width: 92%;
+            }
+
+            h2 {
+                font-size: 30px;
+            }
+
+            #qrBox img {
+                width: 220px;
+                height: 220px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>QR Code Generator</h2>
+        <p class="subtitle">Create beautiful QR codes for links, text, WiFi, and more</p>
+
+        <div class="input-group">
+            <input type="text" id="urlInput" placeholder="Enter any text or URL..." autofocus />
+        </div>
+
+        <button onclick="generateQR()">✨ Generate QR Code</button>
+
+        <div id="qrBox"></div>
+    </div>
+
+    <script>
+        function generateQR() {
+            let url = document.getElementById("urlInput").value.trim();
+            let qrBox = document.getElementById("qrBox");
+
+            if (!url) {
+                qrBox.innerHTML = "<p class='error'>Please enter something!</p>";
+                qrBox.classList.add('show');
+                return;
+            }
+
+            qrBox.innerHTML = "<p style='color:#667eea; font-size:16px;'>Creating your QR code...</p>";
+            qrBox.classList.add('show');
+
+            let qrURL = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(url)}&margin=20`;
+
+            let img = new Image();
+            img.onload = function () {
+                qrBox.innerHTML = `<img src="${qrURL}" alt="QR Code">`;
+                qrBox.classList.add('show');
+            };
+            img.onerror = function () {
+                qrBox.innerHTML = "<p class='error'>Oops! Something went wrong. Try again.</p>";
+                qrBox.classList.add('show');
+            };
+            img.src = qrURL;
+        }
+
+        // Enter key support
+        document.getElementById("urlInput").addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+                generateQR();
+            }
+        });
+
+        // Page load animation trigger
+        window.addEventListener('load', () => {
+            document.querySelector('.container').style.opacity = '1';
+        });
+    </script>
+</body>
+
+</html>

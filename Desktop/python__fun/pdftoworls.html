@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF to Word Converter</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Safe, unblocked PDF.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.13.216/pdf.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+            "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.13.216/pdf.worker.min.js";
+    </script>
+
+    <!-- docx library -->
+    <script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
+
+    <!-- FileSaver -->
+    <script src="https://unpkg.com/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        body::before,
+        body::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            animation: float 20s infinite ease-in-out;
+        }
+
+        body::before {
+            width: 500px;
+            height: 500px;
+            top: -150px;
+            right: -100px;
+        }
+
+        body::after {
+            width: 350px;
+            height: 350px;
+            bottom: -100px;
+            left: -100px;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(-40px)
+            }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            max-width: 540px;
+            width: 100%;
+            padding: 50px 40px;
+            border-radius: 30px;
+            box-shadow: 0 25px 60px rgba(255, 152, 152, 0.3);
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        h1 {
+            font-size: 36px;
+            background: linear-gradient(90deg, #ff6b6b, #fa5252);
+           
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 40px;
+        }
+
+        .upload-area {
+            border: 3px dashed #ff9a9e;
+            border-radius: 20px;
+            padding: 60px 20px;
+            background: #fff5f5;
+            cursor: pointer;
+            transition: 0.4s;
+        }
+
+        .upload-area:hover,
+        .upload-area.dragover {
+            background: #ffe0e0;
+            border-color: #ff6b6b;
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+            color: #ff9a9e;
+        }
+
+        .upload-btn {
+            background: linear-gradient(90deg, #ff6b6b, #fa5252);
+            color: white;
+            border: none;
+            padding: 14px 34px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+            transition: 0.3s;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(255, 107, 107, 0.5);
+        }
+
+        .file-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0f8ff;
+            border-radius: 12px;
+            display: none;
+        }
+
+        .convert-btn {
+            margin-top: 30px;
+            padding: 18px;
+            width: 100%;
+            background: linear-gradient(90deg, #4ecdc4, #44a08d);
+            color: white;
+            border: none;
+            border-radius: 18px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(78, 205, 196, 0.4);
+            transition: 0.4s;
+            display: none;
+        }
+
+        .convert-btn:hover {
+            transform: translateY(-5px);
+        }
+
+        .progress {
+            margin-top: 20px;
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #4ecdc4, #44a08d);
+            transition: width 0.4s;
+        }
+
+        .success {
+            margin-top: 15px;
+            color: #2ecc71;
+            font-weight: 600;
+            font-size: 18px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>PDF to Word</h1>
+        <p class="subtitle">Convert any PDF to editable .docx — instantly & privately</p>
+
+        <div class="upload-area" id="uploadArea">
+            <div class="upload-icon">📄</div>
+            <div style="font-size:18px;color:#888;margin-bottom:15px;">Drag & drop your PDF here</div>
+            <div>or</div>
+            <button class="upload-btn" onclick="document.getElementById('fileInput').click()">Choose PDF File</button>
+            <input type="file" id="fileInput" accept=".pdf" style="display:none">
+        </div>
+
+        <div class="file-info" id="fileInfo">Selected: <strong id="fileName"></strong></div>
+        <button class="convert-btn" id="convertBtn">Convert to Word (.docx)</button>
+
+        <div class="progress" id="progress">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="success" id="successMsg">✅ Done! Your file is downloading...</div>
+    </div>
+
+    <script>
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const fileInfo = document.getElementById('fileInfo');
+        const fileName = document.getElementById('fileName');
+        const convertBtn = document.getElementById('convertBtn');
+        const progress = document.getElementById('progress');
+        const progressBar = document.getElementById('progressBar');
+        const successMsg = document.getElementById('successMsg');
+        let selectedFile = null;
+
+        // Drag & Drop
+        uploadArea.addEventListener('click', () => fileInput.click());
+        ['dragover', 'dragenter'].forEach(e =>
+            uploadArea.addEventListener(e, ev => {
+                ev.preventDefault();
+                uploadArea.classList.add('dragover');
+            })
+        );
+        ['dragleave', 'drop'].forEach(e =>
+            uploadArea.addEventListener(e, () => uploadArea.classList.remove('dragover'))
+        );
+        uploadArea.addEventListener('drop', e => {
+            e.preventDefault();
+            if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+        });
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files[0]) handleFile(fileInput.files[0]);
+        });
+
+        function handleFile(file) {
+            if (!file.name.toLowerCase().endsWith('.pdf')) {
+                alert('Please select a PDF file!');
+                return;
+            }
+            selectedFile = file;
+            fileName.textContent = file.name;
+            fileInfo.style.display = 'block';
+            convertBtn.style.display = 'block';
+        }
+
+        convertBtn.addEventListener('click', async () => {
+            if (!selectedFile) return;
+
+            convertBtn.disabled = true;
+            convertBtn.textContent = 'Converting...';
+
+            progress.style.display = 'block';
+            progressBar.style.width = '10%';
+
+            try {
+                const arrayBuffer = await selectedFile.arrayBuffer();
+                const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+
+                let fullText = "";
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const textContent = await page.getTextContent();
+                    const pageText = textContent.items.map(item => item.str).join(" ");
+
+                    fullText += pageText + "\n\n";
+                    progressBar.style.width = `${(i / pdf.numPages) * 100}%`;
+                }
+
+                const doc = new docx.Document({
+                    sections: [{ children: [new docx.Paragraph(fullText || "No readable text found")] }]
+                });
+
+                const blob = await docx.Packer.toBlob(doc);
+                saveAs(blob, selectedFile.name.replace(/\.pdf$/i, ".docx"));
+
+                successMsg.style.display = "block";
+                setTimeout(() => location.reload(), 2500);
+
+            } catch (err) {
+                console.error("Conversion error:", err);
+                alert("Error converting PDF. It may be scanned, protected, or unsupported.");
+                convertBtn.disabled = false;
+                convertBtn.textContent = "Convert to Word (.docx)";
+                progress.style.display = "none";
+            }
+        });
+    </script>
+</body>
+
+</html>
+
+
+
+
+<!-- not proper working -->

@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PDF Splitter Pro — Export as Images</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+    <style>
+        :root {
+            --bg: #f8faff;
+            --card: #ffffff;
+            --accent: #4361ee;
+            --accent-hover: #3b56d8;
+            --success: #10b981;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --radius: 18px;
+            --shadow: 0 12px 40px rgba(67, 97, 238, 0.12);
+        }
+
+        [data-theme="dark"] {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --text: #e2e8f0;
+            --text-light: #94a3b8;
+            --border: #334155;
+            --shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            transition: background 0.4s ease;
+            position: relative;
+            overflow-x: hidden;
+            overflow-y: scroll;
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(67, 97, 238, 0.1);
+            border-radius: 50%;
+            animation: float 22s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.7;
+            }
+
+            90% {
+                opacity: 0.3;
+            }
+
+            100% {
+                transform: translateY(-120px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            max-width: 900px;
+            width: 100%;
+            padding: 40px;
+            transition: all 0.3s ease;
+        }
+
+        .dark-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 56px;
+            height: 30px;
+            background: var(--border);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .dark-toggle::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        [data-theme="dark"] .dark-toggle {
+            background: var(--accent);
+        }
+
+        [data-theme="dark"] .dark-toggle::after {
+            transform: translateX(26px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        h1 {
+            font-size: 30px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), #5b8cff);
+          
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: var(--text-light);
+            font-size: 15px;
+        }
+
+        .upload-area {
+            border: 3px dashed var(--border);
+            border-radius: 20px;
+            padding: 48px 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(67, 97, 238, 0.04);
+            margin-bottom: 28px;
+        }
+
+        .upload-area:hover,
+        .upload-area.drag {
+            border-color: var(--accent);
+            background: rgba(67, 97, 238, 0.1);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(67, 97, 238, 0.15);
+        }
+
+        .upload-icon {
+            font-size: 56px;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+
+        .upload-title {
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .upload-hint {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .file-info {
+            background: rgba(67, 97, 238, 0.06);
+            padding: 18px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            display: none;
+            border: 1px solid var(--border);
+        }
+
+        .file-name {
+            font-weight: 700;
+            font-size: 17px;
+            margin-bottom: 8px;
+        }
+
+        .file-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .mode-tabs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .mode-tab {
+            padding: 14px;
+            text-align: center;
+            border-radius: 14px;
+            background: rgba(67, 97, 238, 0.08);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            border: 2px solid transparent;
+        }
+
+        .mode-tab.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .option-group {
+            background: rgba(67, 97, 238, 0.05);
+            padding: 16px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+        }
+
+        .option-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        select,
+        input[type="range"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid var(--border);
+            background: var(--card);
+            font-size: 15px;
+        }
+
+        input[type="range"] {
+            height: 40px;
+            accent-color: var(--accent);
+        }
+
+        .range-value {
+            text-align: right;
+            font-weight: 600;
+            color: var(--accent);
+            margin-top: 4px;
+        }
+
+        .range-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group label {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 16px;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.15);
+        }
+
+        .actions {
+            display: flex;
+            gap: 14px;
+            margin-top: 24px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--accent-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .progress {
+            height: 10px;
+            background: var(--border);
+            border-radius: 50px;
+            overflow: hidden;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, var(--accent), #5b8cff);
+            border-radius: 50px;
+            transition: width 0.4s ease;
+        }
+
+        .status {
+            text-align: center;
+            padding: 16px;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border-radius: 12px;
+            font-weight: 700;
+            display: none;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 32px;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 24px;
+            }
+
+            .mode-tabs,
+            .options-grid,
+            .range-inputs {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+
+<body data-theme="light">
+
+    <div class="particles" id="particles"></div>
+
+    <div class="container">
+        <div class="dark-toggle" id="themeToggle" title="Toggle Dark Mode"></div>
+
+        <div class="header">
+            <h1>PDF Splitter Pro</h1>
+            <p class="subtitle">Split pages • Extract range • Export as high-quality images</p>
+        </div>
+
+        <label class="upload-area" id="uploadArea">
+            <div class="upload-icon"><i class="fas fa-file-pdf"></i></div>
+            <div class="upload-title">Drop your PDF here or click to upload</div>
+            <div class="upload-hint">100% private • No upload • Works offline</div>
+            <input type="file" id="fileInput" accept=".pdf" />
+        </label>
+
+        <div class="file-info" id="fileInfo">
+            <div class="file-name" id="fileName">example.pdf</div>
+            <div class="file-meta">
+                <span>Pages: <strong id="pageCount">0</strong></span>
+                <span>Size: <strong id="fileSize">0 KB</strong></span>
+            </div>
+        </div>
+
+        <div class="mode-tabs">
+            <div class="mode-tab active" data-mode="split"><i class="fas fa-cut"></i> Split Pages</div>
+            <div class="mode-tab" data-mode="range"><i class="fas fa-file-export"></i> Extract Range</div>
+            <div class="mode-tab" data-mode="images"><i class="fas fa-image"></i> Export Images</div>
+        </div>
+
+        <div id="rangeSection" style="display:none;">
+            <div class="range-inputs">
+                <div class="input-group">
+                    <label>From Page</label>
+                    <input type="number" id="startPage" min="1" value="1" />
+                </div>
+                <div class="input-group">
+                    <label>To Page</label>
+                    <input type="number" id="endPage" min="1" value="1" />
+                </div>
+            </div>
+        </div>
+
+        <div id="imageOptions" style="display:none;">
+            <div class="options-grid">
+                <div class="option-group">
+                    <label>Image Format</label>
+                    <select id="imgFormat">
+                        <option value="png">PNG (lossless)</option>
+                        <option value="jpg">JPEG (smaller)</option>
+                    </select>
+                </div>
+                <div class="option-group">
+                    <label>Quality Scale</label>
+                    <select id="imgScale">
+                        <option value="1">1x — Fast</option>
+                        <option value="1.5">1.5x — Good</option>
+                        <option value="2" selected>2x — Better</option>
+                        <option value="3">3x — Best</option>
+                    </select>
+                </div>
+            </div>
+            <div class="option-group" id="jpegQualityGroup" style="display:none;">
+                <label>JPEG Quality <span id="jpegVal">0.90</span></label>
+                <input type="range" id="jpegQuality" min="0.3" max="1" step="0.05" value="0.9" />
+                <div class="range-value"><span id="jpegValDisplay">90%</span></div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-primary" id="processBtn" disabled>
+                <i class="fas fa-play"></i> Start Processing
+            </button>
+            <button class="btn btn-secondary" id="clearBtn">
+                <i class="fas fa-trash"></i> Clear All
+            </button>
+        </div>
+
+        <div class="progress" id="progress">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="status" id="status">Processing complete! Download started.</div>
+
+        <footer>Secure • Instant • No server required • Built with pdf.js & pdf-lib</footer>
+    </div>
+
+    <!-- Libraries (stable pdf.js v2, pdf-lib, jszip, file-saver) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.13.216/pdf.min.js"></script>
+    <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.13.216/pdf.worker.min.js';</script>
+    <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+
+    <script>
+        // Floating Particles
+        function createParticle() {
+            const p = document.createElement('div');
+            p.classList.add('particle');
+            p.style.width = p.style.height = Math.random() * 90 + 50 + 'px';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.animationDuration = Math.random() * 20 + 18 + 's';
+            p.style.opacity = Math.random() * 0.4 + 0.2;
+            document.getElementById('particles').appendChild(p);
+            setTimeout(() => p.remove(), 40000);
+        }
+        setInterval(createParticle, 3200);
+        for (let i = 0; i < 10; i++) createParticle();
+
+        // Theme Toggle
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            const isDark = document.body.getAttribute('data-theme') === 'dark';
+            document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+        });
+
+        // Elements
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const fileInfo = document.getElementById('fileInfo');
+        const fileNameEl = document.getElementById('fileName');
+        const fileSizeEl = document.getElementById('fileSize');
+        const pageCountEl = document.getElementById('pageCount');
+        const processBtn = document.getElementById('processBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const rangeSection = document.getElementById('rangeSection');
+        const imageOptions = document.getElementById('imageOptions');
+        const jpegQualityGroup = document.getElementById('jpegQualityGroup');
+        const imgFormat = document.getElementById('imgFormat');
+        const imgScale = document.getElementById('imgScale');
+        const jpegQuality = document.getElementById('jpegQuality');
+        const jpegVal = document.getElementById('jpegVal');
+        const jpegValDisplay = document.getElementById('jpegValDisplay');
+        const startPage = document.getElementById('startPage');
+        const endPage = document.getElementById('endPage');
+        const progress = document.getElementById('progress');
+        const progressBar = document.getElementById('progressBar');
+        const status = document.getElementById('status');
+
+        let pdfLibDoc = null;
+        let pdfArrayBuffer = null;
+        let totalPages = 0;
+        let currentFile = null;
+        let guard = false;
+
+        // Mode Tabs
+        document.querySelectorAll('.mode-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                const mode = tab.dataset.mode;
+                rangeSection.style.display = mode === 'range' ? 'block' : 'none';
+                imageOptions.style.display = mode === 'images' ? 'block' : 'none';
+                jpegQualityGroup.style.display = (mode === 'images' && imgFormat.value === 'jpg') ? 'block' : 'none';
+            });
+        });
+
+        imgFormat.addEventListener('change', () => {
+            jpegQualityGroup.style.display = (imgFormat.value === 'jpg') ? 'block' : 'none';
+        });
+
+        jpegQuality.addEventListener('input', () => {
+            const val = parseFloat(jpegQuality.value);
+            jpegVal.textContent = val.toFixed(2);
+            jpegValDisplay.textContent = Math.round(val * 100) + '%';
+        });
+
+        // Drag & Drop behavior + file input
+        ['dragover', 'dragenter'].forEach(e => uploadArea.addEventListener(e, (ev) => { ev.preventDefault(); uploadArea.classList.add('drag'); }));
+        ['dragleave', 'drop'].forEach(e => uploadArea.addEventListener(e, () => uploadArea.classList.remove('drag')));
+        uploadArea.addEventListener('drop', ev => { ev.preventDefault(); if (ev.dataTransfer.files[0]) handleFile(ev.dataTransfer.files[0]); });
+        fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleFile(fileInput.files[0]); });
+
+        clearBtn.addEventListener('click', () => {
+            currentFile = pdfLibDoc = pdfArrayBuffer = null;
+            totalPages = 0;
+            fileInfo.style.display = 'none';
+            processBtn.disabled = true;
+            fileInput.value = '';
+            progress.style.display = 'none';
+            status.style.display = 'none';
+        });
+
+        async function handleFile(file) {
+            if (!file || !file.name.toLowerCase().endsWith('.pdf')) return alert('Please select a PDF file');
+
+            // guard against double events
+            if (guard) return;
+            guard = true;
+            setTimeout(() => guard = false, 600);
+
+            currentFile = file;
+            fileNameEl.textContent = file.name;
+            fileSizeEl.textContent = (file.size / 1024).toFixed(1) + ' KB';
+            fileInfo.style.display = 'block';
+            pageCountEl.textContent = 'Loading...';
+            processBtn.disabled = true;
+            progress.style.display = 'none';
+            status.style.display = 'none';
+
+            try {
+                pdfArrayBuffer = await file.arrayBuffer();
+                // load pdf-lib doc (for split/extract)
+                pdfLibDoc = await PDFLib.PDFDocument.load(new Uint8Array(pdfArrayBuffer));
+                totalPages = pdfLibDoc.getPageCount();
+
+                pageCountEl.textContent = totalPages;
+                startPage.max = endPage.max = totalPages;
+                endPage.value = totalPages;
+                processBtn.disabled = false;
+            } catch (err) {
+                alert('Failed to load PDF. Try running via local server (Live Server).');
+                console.error(err);
+                currentFile = pdfLibDoc = pdfArrayBuffer = null;
+                fileInfo.style.display = 'none';
+                processBtn.disabled = true;
+            }
+        }
+
+        // helper: canvas.toBlob -> Promise<Blob>
+        function canvasToBlob(canvas, mimeType, quality) {
+            return new Promise((resolve) => {
+                // some browsers require callback style
+                canvas.toBlob(function (blob) {
+                    resolve(blob);
+                }, mimeType, quality);
+            });
+        }
+
+        processBtn.addEventListener('click', async () => {
+            if (!pdfLibDoc) return;
+            progress.style.display = 'block';
+            progressBar.style.width = '0%';
+            status.style.display = 'none';
+            processBtn.disabled = true;
+
+            const mode = document.querySelector('.mode-tab.active').dataset.mode;
+
+            try {
+                if (mode === 'split') {
+                    const zip = new JSZip();
+                    for (let i = 0; i < totalPages; i++) {
+                        const newDoc = await PDFLib.PDFDocument.create();
+                        const [page] = await newDoc.copyPages(pdfLibDoc, [i]);
+                        newDoc.addPage(page);
+                        const bytes = await newDoc.save();
+                        zip.file(`page_${i + 1}.pdf`, bytes);
+                        progressBar.style.width = `${((i + 1) / totalPages) * 100}%`;
+                    }
+                    const blob = await zip.generateAsync({ type: 'blob' }, meta => {
+                        progressBar.style.width = `${Math.round(meta.percent)}%`;
+                    });
+                    saveAs(blob, `${currentFile.name.replace(/\.pdf$/i, '')}_split.zip`);
+                }
+                else if (mode === 'range') {
+                    let start = Math.max(1, parseInt(startPage.value) || 1);
+                    let end = Math.min(totalPages, parseInt(endPage.value) || totalPages);
+                    if (start > end) [start, end] = [end, start];
+
+                    const newDoc = await PDFLib.PDFDocument.create();
+                    const pages = await newDoc.copyPages(pdfLibDoc, Array.from({ length: end - start + 1 }, (_, i) => start - 1 + i));
+                    pages.forEach(p => newDoc.addPage(p));
+                    const out = await newDoc.save();
+                    saveAs(new Blob([out], { type: 'application/pdf' }), `${currentFile.name.replace(/\.pdf$/i, '')}_pages_${start}-${end}.pdf`);
+                    progressBar.style.width = '100%';
+                }
+                else if (mode === 'images') {
+                    // Render pages with pdf.js (stable v2)
+                    const loadingTask = pdfjsLib.getDocument({ data: pdfArrayBuffer });
+                    const pdf = await loadingTask.promise;
+                    const pages = pdf.numPages;
+                    const scale = parseFloat(imgScale.value) || 2;
+                    const format = imgFormat.value; // 'png' or 'jpg'
+                    const quality = parseFloat(jpegQuality.value) || 0.9;
+                    const zip = new JSZip();
+
+                    for (let p = 1; p <= pages; p++) {
+                        const page = await pdf.getPage(p);
+                        const viewport = page.getViewport({ scale });
+                        // create an offscreen canvas with the right size
+                        const canvas = document.createElement('canvas');
+                        canvas.width = Math.round(viewport.width);
+                        canvas.height = Math.round(viewport.height);
+                        const ctx = canvas.getContext('2d');
+
+                        // render page
+                        await page.render({ canvasContext: ctx, viewport }).promise;
+
+                        // convert canvas to blob
+                        const mime = format === 'png' ? 'image/png' : 'image/jpeg';
+                        const blob = await canvasToBlob(canvas, mime, format === 'jpg' ? quality : 1);
+
+                        // store in zip
+                        const ext = format === 'png' ? 'png' : 'jpg';
+                        zip.file(`${currentFile.name.replace(/\.pdf$/i, '')}_page_${p}.${ext}`, blob);
+
+                        // progress
+                        progressBar.style.width = `${Math.round((p / pages) * 100)}%`;
+                    }
+
+                    const content = await zip.generateAsync({ type: 'blob' }, meta => {
+                        progressBar.style.width = `${Math.round(meta.percent)}%`;
+                    });
+                    saveAs(content, `${currentFile.name.replace(/\.pdf$/i, '')}_images.zip`);
+                }
+
+                status.style.display = 'block';
+            } catch (err) {
+                console.error('Processing failed', err);
+                alert('Processing failed — check console for details.');
+            } finally {
+                setTimeout(() => { progress.style.display = 'none'; progressBar.style.width = '0%'; processBtn.disabled = false; }, 1200);
+            }
+        });
+    </script>
+</body>
+
+</html>

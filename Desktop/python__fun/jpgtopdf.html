@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JPG to PDF Converter Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://unpkg.com/downloadjs@1.4.7/download.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* === Beautiful Floating Bubbles === */
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.18);
+            pointer-events: none;
+            animation: float linear infinite;
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .bubble:nth-child(1) {
+            width: 380px;
+            height: 380px;
+            left: -10%;
+            top: 20%;
+            animation-duration: 28s;
+            animation-delay: 0s;
+        }
+
+        .bubble:nth-child(2) {
+            width: 520px;
+            height: 520px;
+            right: -15%;
+            bottom: 10%;
+            animation-duration: 35s;
+            animation-delay: 5s;
+        }
+
+        .bubble:nth-child(3) {
+            width: 280px;
+            height: 280px;
+            left: 10%;
+            bottom: -10%;
+            animation-duration: 32s;
+            animation-delay: 12s;
+        }
+
+        .bubble:nth-child(4) {
+            width: 450px;
+            height: 450px;
+            right: 5%;
+            top: -10%;
+            animation-duration: 40s;
+            animation-delay: 18s;
+        }
+
+        .bubble:nth-child(5) {
+            width: 320px;
+            height: 320px;
+            left: 50%;
+            top: 80%;
+            animation-duration: 30s;
+            animation-delay: 8s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+            }
+
+            25% {
+                transform: translateY(-80px) translateX(60px) rotate(90deg);
+            }
+
+            50% {
+                transform: translateY(-40px) translateX(-50px) rotate(180deg);
+            }
+
+            75% {
+                transform: translateY(-100px) translateX(40px) rotate(270deg);
+            }
+
+            100% {
+                transform: translateY(0) translateX(0) rotate(360deg);
+            }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            max-width: 540px;
+            width: 100%;
+            padding: 55px 45px;
+            border-radius: 32px;
+            box-shadow: 0 30px 80px rgba(255, 107, 107, 0.35);
+            text-align: center;
+            animation: riseUp 1.2s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            position: relative;
+            z-index: 10;
+        }
+
+        @keyframes riseUp {
+            from {
+                opacity: 0;
+                transform: translateY(70px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        h1 {
+            font-size: 40px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #ff6b6b, #fa5252);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+        }
+
+        p.subtitle {
+            color: #666;
+            font-size: 17px;
+            margin-bottom: 45px;
+            font-weight: 500;
+        }
+
+        .upload-area {
+            border: 3px dashed #ff9a9e;
+            border-radius: 28px;
+            padding: 70px 30px;
+            background: linear-gradient(135deg, #fff5f5, #ffe0e0);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-area::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 107, 107, 0.2), transparent);
+            transition: 0.8s;
+        }
+
+        .upload-area:hover::before {
+            left: 150%;
+        }
+
+        .upload-area:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(255, 107, 107, 0.3);
+            border-color: #ff6b6b;
+            background: #ffe0e0;
+        }
+
+        .upload-area.dragover {
+            transform: scale(1.05);
+            background: #ffd1d1;
+            border-color: #ff5252;
+        }
+
+        .upload-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            color: #ff6b6b;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .upload-text {
+            font-size: 22px;
+            font-weight: 600;
+            color: #888;
+            margin-bottom: 8px;
+        }
+
+        .upload-subtext {
+            color: #aaa;
+            font-size: 16px;
+        }
+
+        /* Rest of your styles remain the same (file-list, button, progress, etc.) */
+        .file-list {
+            margin: 30px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #fff0f0, #ffe8e8);
+            border-radius: 18px;
+            max-height: 180px;
+            overflow-y: auto;
+            font-size: 15px;
+            color: #555;
+            text-align: left;
+            display: none;
+            animation: fadeIn 0.8s ease;
+            border: 1px solid #ffd4d4;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #ffdddd;
+        }
+
+        .file-item:last-child {
+            border-bottom: none;
+        }
+
+        .file-item::before {
+            content: "🖼️";
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .convert-btn {
+            padding: 20px;
+            width: 100%;
+            background: linear-gradient(90deg, #ff6b6b, #fa5252);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 19px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 12px 35px rgba(255, 107, 107, 0.45);
+            transition: all 0.4s ease;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .convert-btn:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 20px 50px rgba(255, 107, 107, 0.6);
+        }
+
+        .progress {
+            margin-top: 25px;
+            height: 12px;
+            background: #eee;
+            border-radius: 6px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ff6b6b, #fa5252);
+            border-radius: 6px;
+            transition: width 0.6s ease;
+        }
+
+        .success {
+            margin-top: 25px;
+            padding: 20px;
+            background: #d4edda;
+            color: #155724;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 18px;
+            display: none;
+            animation: bounceIn 1s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            70% {
+                transform: scale(0.9);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 40px 30px;
+            }
+
+            h1 {
+                font-size: 34px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Beautiful Moving Bubbles -->
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+
+    <div class="container">
+        <h1>JPG to PDF</h1>
+        <p class="subtitle">Convert multiple images into a beautiful PDF instantly ✨</p>
+
+        <div class="upload-area" id="uploadArea">
+            <div class="upload-icon">🖼️</div>
+            <div class="upload-text">Drop your images here</div>
+            <div class="upload-subtext">or click to select (JPG & PNG supported)</div>
+        </div>
+
+        <input type="file" id="imgInput" accept="image/jpeg,image/jpg,image/png" multiple style="display:none">
+
+        <div class="file-list" id="fileList"></div>
+
+        <button class="convert-btn" id="convertBtn">Convert to PDF Now</button>
+
+        <div class="progress" id="progress">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <div class="success" id="successMsg">
+            PDF Created Successfully! 🎉<br>Your file is downloading...
+        </div>
+    </div>
+
+    <!-- Same working script as before -->
+    <script>
+        const uploadArea = document.getElementById('uploadArea');
+        const imgInput = document.getElementById('imgInput');
+        const fileList = document.getElementById('fileList');
+        const convertBtn = document.getElementById('convertBtn');
+        const progress = document.getElementById('progress');
+        const progressBar = document.getElementById('progressBar');
+        const successMsg = document.getElementById('successMsg');
+
+        let selectedImages = [];
+
+        uploadArea.addEventListener('click', () => imgInput.click());
+        ['dragover', 'dragenter'].forEach(e => uploadArea.addEventListener(e, ev => { ev.preventDefault(); uploadArea.classList.add('dragover'); }));
+        ['dragleave', 'drop'].forEach(e => uploadArea.addEventListener(e, () => uploadArea.classList.remove('dragover')));
+        uploadArea.addEventListener('drop', e => { e.preventDefault(); if (e.dataTransfer.files.length) handleFiles(e.dataTransfer.files); });
+        imgInput.addEventListener('change', () => { if (imgInput.files.length) handleFiles(imgInput.files); });
+
+        function handleFiles(files) {
+            selectedImages = Array.from(files).filter(f => f.type.match('image/(jpeg|jpg|png)'));
+            if (selectedImages.length === 0) return alert('Please select valid JPG or PNG images!');
+
+            fileList.innerHTML = selectedImages.map(img =>
+                `<div class="file-item">${img.name} <small>(${(img.size / 1024).toFixed(1)} KB)</small></div>`
+            ).join('');
+
+            fileList.style.display = 'block';
+            convertBtn.style.display = 'block';
+            convertBtn.disabled = false;
+        }
+
+        convertBtn.addEventListener('click', async () => {
+            if (selectedImages.length === 0) return;
+
+            convertBtn.disabled = true;
+            convertBtn.textContent = 'Creating PDF...';
+            progress.style.display = 'block';
+
+            try {
+                const pdfDoc = await PDFLib.PDFDocument.create();
+
+                for (let i = 0; i < selectedImages.length; i++) {
+                    const img = selectedImages[i];
+                    const imgBytes = await img.arrayBuffer();
+                    let embeddedImg;
+
+                    if (img.type.includes('jpeg') || img.type.includes('jpg')) {
+                        embeddedImg = await pdfDoc.embedJpg(imgBytes);
+                    } else if (img.type.includes('png')) {
+                        embeddedImg = await pdfDoc.embedPng(imgBytes);
+                    }
+
+                    const { width, height } = embeddedImg.scale(1);
+                    const page = pdfDoc.addPage([width, height]);
+                    page.drawImage(embeddedImg, { x: 0, y: 0, width, height });
+
+                    progressBar.style.width = `${((i + 1) / selectedImages.length) * 100}%`;
+                }
+
+                const pdfBytes = await pdfDoc.save();
+                download(pdfBytes, `converted-images-${Date.now()}.pdf`, 'application/pdf');
+
+                successMsg.style.display = 'block';
+                setTimeout(() => location.reload(), 4000);
+
+            } catch (err) {
+                alert('Conversion failed. Please try again.');
+                console.error(err);
+                convertBtn.disabled = false;
+                convertBtn.textContent = 'Convert to PDF Now';
+                progress.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+
+</html>
